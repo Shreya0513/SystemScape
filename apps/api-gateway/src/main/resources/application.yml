@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+redis-lab:
+  url: ${REDIS_LAB_URL:http://localhost:8081}

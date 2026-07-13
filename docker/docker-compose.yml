@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: systemscape
+      POSTGRES_USER: systemscape
+      POSTGRES_PASSWORD: systemscape
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis-lab:
+    build:
+      context: ../services/redis-lab
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_REDIS_HOST: redis
+    depends_on:
+      - redis
+
+  api-gateway:
+    build:
+      context: ../apps/api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_LAB_URL: http://redis-lab:8081
+    depends_on:
+      - redis-lab
+
+volumes:
+  postgres_data:
