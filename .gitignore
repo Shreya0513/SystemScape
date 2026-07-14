@@ -7,6 +7,9 @@ node_modules/
 target/
 *.class
 
+# Local tooling
+.claude/
+
 # OS
 .DS_Store
 
