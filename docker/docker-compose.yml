@@ -25,6 +25,12 @@ services:
     depends_on:
       - redis
 
+  rate-limiter-lab:
+    build:
+      context: ../services/rate-limiter-lab
+    ports:
+      - "8082:8082"
+
   api-gateway:
     build:
       context: ../apps/api-gateway

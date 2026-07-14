@@ -26,3 +26,18 @@ export interface EvictionEvent {
   policy: "LRU" | "LFU";
   timestamp: string;
 }
+
+export type RateLimitEventType = "ACCEPTED" | "REJECTED" | "CONFIG";
+export type RateLimitAlgorithm = "TOKEN_BUCKET" | "LEAKY_BUCKET" | "FIXED_WINDOW" | "SLIDING_WINDOW";
+
+export interface RateLimitEvent {
+  type: RateLimitEventType;
+  algorithm: RateLimitAlgorithm;
+  level: number;
+  capacity: number;
+  ratePerSecond: number;
+  windowSeconds: number;
+  windowRemainingMs: number;
+  recentOffsetsMs: number[];
+  timestamp: string;
+}

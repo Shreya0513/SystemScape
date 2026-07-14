@@ -10,6 +10,7 @@ import { TtlControl } from "@/components/TtlControl";
 import { LatencyChart } from "@/components/LatencyChart";
 import { EvictionVisualizer } from "@/components/EvictionVisualizer";
 import { CacheDemos } from "@/components/CacheDemos";
+import Link from "next/link";
 import { useCacheEvents } from "@/lib/useCacheEvents";
 import type { CacheEvent } from "@/lib/types";
 
@@ -70,6 +71,9 @@ export default function Home() {
             <p className="text-slate-400 text-sm mt-1">
               Send requests and watch the cache work in real time.
             </p>
+            <Link href="/rate-limiter" className="text-xs text-cyan-500 hover:text-cyan-300">
+              Rate Limiter Lab →
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             <span
