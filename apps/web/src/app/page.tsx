@@ -6,6 +6,8 @@ import { CacheGraph } from "@/components/CacheGraph";
 import { HitRatioMeter } from "@/components/HitRatioMeter";
 import { StreakBadge } from "@/components/StreakBadge";
 import { EventLog } from "@/components/EventLog";
+import { TtlControl } from "@/components/TtlControl";
+import { LatencyChart } from "@/components/LatencyChart";
 import { useCacheEvents } from "@/lib/useCacheEvents";
 import type { CacheEvent } from "@/lib/types";
 
@@ -23,6 +25,7 @@ export default function Home() {
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [ttl, setTtl] = useState(60);
 
   const handleEvent = useCallback((event: CacheEvent) => {
     setEvents((prev) => [event, ...prev].slice(0, 30));
@@ -39,7 +42,11 @@ export default function Home() {
   const { connected } = useCacheEvents(handleEvent);
 
   const fetchUser = async (id: string) => {
-    await fetch(`${REDIS_LAB_URL}/cache/users/${id}`);
+    await fetch(`${REDIS_LAB_URL}/cache/users/${id}?ttlSeconds=${ttl}`);
+  };
+
+  const evictUser = async (id: string) => {
+    await fetch(`${REDIS_LAB_URL}/cache/users/${id}`, { method: "DELETE" });
   };
 
   const total = hits + misses;
@@ -75,17 +82,29 @@ export default function Home() {
           </div>
         </motion.div>
 
+        <TtlControl ttl={ttl} onChange={setTtl} />
+
         <div className="flex flex-wrap gap-3">
           {USERS.map((user) => (
-            <motion.button
-              key={user.id}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => fetchUser(user.id)}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 hover:from-cyan-500 hover:to-cyan-400 text-sm font-bold shadow-lg shadow-cyan-950/50"
-            >
-              {user.emoji} GET /users/{user.id}
-            </motion.button>
+            <div key={user.id} className="flex items-center gap-1.5">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => fetchUser(user.id)}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 hover:from-cyan-500 hover:to-cyan-400 text-sm font-bold shadow-lg shadow-cyan-950/50"
+              >
+                {user.emoji} GET /users/{user.id}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => evictUser(user.id)}
+                title={`Evict user ${user.id} from cache`}
+                className="px-2.5 py-2.5 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-sm border border-slate-700 hover:border-rose-500/50"
+              >
+                🗑️
+              </motion.button>
+            </div>
           ))}
         </div>
 
@@ -93,8 +112,10 @@ export default function Home() {
 
         <div className="grid md:grid-cols-2 gap-4">
           <HitRatioMeter ratio={hitRatio} hits={hits} misses={misses} />
-          <EventLog events={events} />
+          <LatencyChart events={events} />
         </div>
+
+        <EventLog events={events} />
       </div>
     </main>
   );
