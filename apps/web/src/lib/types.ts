@@ -15,3 +15,14 @@ export interface CacheEvent {
   latencyMs: number;
   timestamp: string;
 }
+
+export type EvictionEventType = "ACCESS_HIT" | "ACCESS_MISS" | "EVICT" | "RESET";
+
+export interface EvictionEvent {
+  type: EvictionEventType;
+  key: string | null;
+  evictedKey: string | null;
+  slots: string[];
+  policy: "LRU" | "LFU";
+  timestamp: string;
+}

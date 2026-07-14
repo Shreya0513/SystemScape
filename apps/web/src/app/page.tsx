@@ -8,6 +8,8 @@ import { StreakBadge } from "@/components/StreakBadge";
 import { EventLog } from "@/components/EventLog";
 import { TtlControl } from "@/components/TtlControl";
 import { LatencyChart } from "@/components/LatencyChart";
+import { EvictionVisualizer } from "@/components/EvictionVisualizer";
+import { CacheDemos } from "@/components/CacheDemos";
 import { useCacheEvents } from "@/lib/useCacheEvents";
 import type { CacheEvent } from "@/lib/types";
 
@@ -116,6 +118,10 @@ export default function Home() {
         </div>
 
         <EventLog events={events} />
+
+        <CacheDemos events={events} />
+
+        <EvictionVisualizer />
       </div>
     </main>
   );
