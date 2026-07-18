@@ -10,6 +10,7 @@ import { TtlControl } from "@/components/TtlControl";
 import { LatencyChart } from "@/components/LatencyChart";
 import { EvictionVisualizer } from "@/components/EvictionVisualizer";
 import { CacheDemos } from "@/components/CacheDemos";
+import { AuthButton } from "@/components/AuthButton";
 import Link from "next/link";
 import { useCacheEvents } from "@/lib/useCacheEvents";
 import type { CacheEvent } from "@/lib/types";
@@ -85,6 +86,7 @@ export default function Home() {
               {connected ? "Live" : "Connecting…"}
             </span>
             <StreakBadge streak={streak} />
+            <AuthButton />
           </div>
         </motion.div>
 

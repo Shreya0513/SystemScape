@@ -10,6 +10,7 @@ import { FixedWindowViz } from "@/components/FixedWindowViz";
 import { SlidingWindowViz } from "@/components/SlidingWindowViz";
 import { RateLimiterControls } from "@/components/RateLimiterControls";
 import { AcceptRejectChart } from "@/components/AcceptRejectChart";
+import { AuthButton } from "@/components/AuthButton";
 import { useRateLimitEvents } from "@/lib/useRateLimitEvents";
 import type { RateLimitAlgorithm, RateLimitEvent } from "@/lib/types";
 
@@ -112,15 +113,21 @@ export default function RateLimiterPage() {
                 🪣 Rate Limiter Lab
               </h1>
               <p className="text-slate-400 text-sm mt-1">Four algorithms, four different ways to say "slow down."</p>
+              <Link href="/load-balancer" className="text-xs text-cyan-500 hover:text-cyan-300">
+                Load Balancer Lab →
+              </Link>
             </div>
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                connected ? "bg-emerald-500/15 text-emerald-400" : "bg-slate-700/50 text-slate-400"
-              }`}
-            >
-              <span className={`h-1.5 w-1.5 rounded-full ${connected ? "bg-emerald-400 animate-pulse" : "bg-slate-500"}`} />
-              {connected ? "Live" : "Connecting…"}
-            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
+                  connected ? "bg-emerald-500/15 text-emerald-400" : "bg-slate-700/50 text-slate-400"
+                }`}
+              >
+                <span className={`h-1.5 w-1.5 rounded-full ${connected ? "bg-emerald-400 animate-pulse" : "bg-slate-500"}`} />
+                {connected ? "Live" : "Connecting…"}
+              </span>
+              <AuthButton />
+            </div>
           </div>
         </motion.div>
 

@@ -41,3 +41,25 @@ export interface RateLimitEvent {
   recentOffsetsMs: number[];
   timestamp: string;
 }
+
+export type LbAlgorithm = "ROUND_ROBIN" | "LEAST_CONNECTIONS" | "WEIGHTED_ROUND_ROBIN" | "IP_HASH" | "RANDOM";
+export type LbEventType = "ROUTE" | "COMPLETE" | "NO_SERVERS" | "ADD" | "REMOVE" | "KILL" | "REVIVE" | "CONFIG";
+
+export interface ServerSnapshot {
+  id: string;
+  weight: number;
+  alive: boolean;
+  latencyMs: number;
+  cpuLoadPct: number;
+  activeConnections: number;
+  totalRequests: number;
+}
+
+export interface LbEvent {
+  type: LbEventType;
+  serverId: string | null;
+  algorithm: LbAlgorithm;
+  clientKey: string | null;
+  servers: ServerSnapshot[];
+  timestamp: string;
+}
